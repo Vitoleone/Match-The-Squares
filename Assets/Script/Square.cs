@@ -46,6 +46,23 @@ public class Square : MonoBehaviour
         }
         Debug.Log("çalýþtý");
     }
+    private void OnMouseDown()
+    {
+        SelectSquare();
+    }
+    void SelectSquare()
+    {
+        if(!GameManager.instance.isSquareSelected)
+        {
+            GameManager.instance.isSquareSelected = true;
+            GameManager.instance.selectedSquares[0] = this;
+        }
+        else
+        {
+            GameManager.instance.selectedSquares[1] = this;
+            EventManager.instance.onSecondSquareSelected?.Invoke();
+        }
+    }
     public SquareType GetSquareType()
     {
         return type;

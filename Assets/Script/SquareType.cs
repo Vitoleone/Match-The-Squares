@@ -1,6 +1,6 @@
 public enum SquareType
 {
-    Yellow = 1,
+    Blue = 1,
     Green = 2,
     Red = 3,
 }
