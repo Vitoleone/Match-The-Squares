@@ -7,13 +7,7 @@ public class Square : MonoBehaviour
 {
     RaycastHit2D leftHit, rightHit, upHit, downHit;
     [SerializeField]Square[] neighboors;
-   private enum SquareType
-    {
-        Yellow = 1,
-        Green = 2,
-        Blue = 3,
-    }
-    [SerializeField]private SquareType type => type;
+    [SerializeField]private SquareType type;
     private void Start()
     {
         CheckNeighboors();
@@ -26,7 +20,7 @@ public class Square : MonoBehaviour
         }
     }
 
-    public void CheckNeighboors()
+    void CheckNeighboors()
     {
         neighboors = new Square[4];
         leftHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x - 0.8f, gameObject.transform.position.y), -transform.right);
@@ -51,6 +45,10 @@ public class Square : MonoBehaviour
             neighboors[3] = downHit.transform.gameObject.GetComponent<Square>();
         }
         Debug.Log("çalýþtý");
+    }
+    public SquareType GetSquareType()
+    {
+        return type;
     }
 
 

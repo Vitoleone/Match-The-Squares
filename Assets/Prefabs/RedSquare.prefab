@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: -6291181863844938422}
   - component: {fileID: -801746049284778735}
   m_Layer: 0
-  m_Name: Square
+  m_Name: RedSquare
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,7 +77,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 0.9607843, g: 0.5443321, b: 0.5058824, a: 0.8235294}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -99,7 +99,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e59465c0bc8773f41911b3f1f87b3543, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  leftSquare: {fileID: 0}
+  neighboors: []
+  type: 3
 --- !u!61 &-6291181863844938422
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -5,7 +5,7 @@ using UnityEngine;
 public class SquareManager : MonoBehaviour
 {
    public static SquareManager instance;
-   [SerializeField]private GameObject squarePrefab;
+   [SerializeField]private GameObject[] squarePrefab;
     [SerializeField] private float width;
     [SerializeField] private float height;
     [SerializeField]List<Square> squareList;
@@ -27,7 +27,8 @@ public class SquareManager : MonoBehaviour
         {
             for(int x = 0;x<width;x++)
             {
-                newSquare = Instantiate(squarePrefab, new Vector3(x+0.2f,y+0.2f,1),Quaternion.identity);
+                int random = Random.Range(0,squarePrefab.Length);
+                newSquare = Instantiate(squarePrefab[random], new Vector3(x + 0.3f*x,y + 0.3f*y,1),Quaternion.identity);
                 newSquare.gameObject.name = "x: " + x + " y: " + y;
                 squareList.Add(newSquare.GetComponent<Square>());
             }
