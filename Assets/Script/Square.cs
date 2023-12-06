@@ -44,7 +44,7 @@ public class Square : MonoBehaviour
         {
             neighboors[3] = downHit.transform.gameObject.GetComponent<Square>();
         }
-        Debug.Log("çalýþtý");
+        
     }
     private void OnMouseDown()
     {
