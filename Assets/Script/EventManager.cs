@@ -8,6 +8,7 @@ public class EventManager : MonoBehaviour
     public static EventManager instance;
     public Action onSecondSquareSelected;
     public Action onSquareMoved;
+    public Action onCracked;
 
     private void Awake()
     {

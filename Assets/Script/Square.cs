@@ -13,6 +13,7 @@ public class Square : MonoBehaviour
     {
         EventManager.instance.onSquareMoved += CheckNeighboors;
         EventManager.instance.onSquareMoved += CheckSameTypeNeighboor;
+       
         CheckNeighboors();
         CheckSameTypeNeighboor();
     }
@@ -21,16 +22,24 @@ public class Square : MonoBehaviour
     {
         EventManager.instance.onSquareMoved -= CheckNeighboors;
         EventManager.instance.onSquareMoved -= CheckSameTypeNeighboor;
+        
     }
-
+    private void OnDrawGizmos()
+    {
+        Debug.DrawRay(new Vector2(gameObject.transform.position.x - 0.4f, gameObject.transform.position.y), -transform.right * 0.5f);
+        Debug.DrawRay(new Vector2(gameObject.transform.position.x + 0.4f, gameObject.transform.position.y), transform.right * 0.5f);
+        Debug.DrawRay(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + 0.4f), transform.up * 0.5f);
+        Debug.DrawRay(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 0.4f), -transform.up * 0.5f);
+    }
+    [NaughtyAttributes.Button]
     public void CheckNeighboors()
     {
         sameTypeCount = 1;
         neighboors = new Square[4];
-        leftHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x - 0.8f, gameObject.transform.position.y), -transform.right);
-        rightHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x + 0.8f, gameObject.transform.position.y), transform.right);
-        upHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + 0.8f), transform.up);
-        downHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 0.8f), -transform.up);
+        leftHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x - 0.4f, gameObject.transform.position.y), -transform.right*0.5f);
+        rightHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x + 0.4f, gameObject.transform.position.y), transform.right * 0.5f);
+        upHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + 0.4f), transform.up * 0.5f);
+        downHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 0.4f), -transform.up * 0.5f);
 
         if(leftHit.collider != null && leftHit.transform.gameObject != gameObject)
         {
@@ -70,6 +79,7 @@ public class Square : MonoBehaviour
                 Crack();
             }
         }
+        
         GameManager.instance.ChangeGameState(GameState.Playing);
     }
     private void OnMouseDown()
@@ -96,6 +106,7 @@ public class Square : MonoBehaviour
     public void Crack()
     {
         gameObject.SetActive(false);
+        EventManager.instance.onCracked?.Invoke();
     }
 
 

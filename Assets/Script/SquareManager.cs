@@ -18,6 +18,8 @@ public class SquareManager : MonoBehaviour
     private void Start()
     {
         GenerateSquares();
+        CheckAllSquares();
+        EventManager.instance.onCracked += CheckAllSquares;
     }
 
     [NaughtyAttributes.Button]
@@ -37,6 +39,17 @@ public class SquareManager : MonoBehaviour
         }
         Camera.main.transform.position = new Vector3(height / 2 - 0.5f, width / 2 - 0.5f,0);
         GameManager.instance.ChangeGameState(GameState.Playing);
+    }
+    public void CheckAllSquares()
+    {
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                if (squareList[y,x] != null)
+                squareList[y, x].CheckNeighboors();
+            }
+        }
     }
 
 }
