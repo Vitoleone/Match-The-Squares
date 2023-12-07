@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -36,10 +37,10 @@ public class Square : MonoBehaviour
     {
         sameTypeCount = 1;
         neighboors = new Square[4];
-        leftHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x - 0.4f, gameObject.transform.position.y), -transform.right*0.5f);
-        rightHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x + 0.4f, gameObject.transform.position.y), transform.right * 0.5f);
-        upHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + 0.4f), transform.up * 0.5f);
-        downHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 0.4f), -transform.up * 0.5f);
+        leftHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x - 0.4f, gameObject.transform.position.y), -transform.right*0.5f, 0.4f);
+        rightHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x + 0.4f, gameObject.transform.position.y), transform.right * 0.5f,0.4f);
+        upHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + 0.4f), transform.up * 0.5f, 0.4f);
+        downHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 0.4f), -transform.up * 0.5f, 0.4f);
 
         if(leftHit.collider != null && leftHit.transform.gameObject != gameObject)
         {
@@ -105,8 +106,12 @@ public class Square : MonoBehaviour
     }
     public void Crack()
     {
-        gameObject.SetActive(false);
-        EventManager.instance.onCracked?.Invoke();
+        transform.DOScale(.3f, .25f).OnComplete(() =>
+        {
+            //Do particles and deactive
+            EventManager.instance.onCracked?.Invoke();
+            gameObject.SetActive(false);
+        });
     }
 
 
