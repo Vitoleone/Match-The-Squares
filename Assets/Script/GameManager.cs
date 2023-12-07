@@ -34,11 +34,10 @@ public class GameManager : MonoBehaviour
     {
         Vector3 square1 = new Vector3(selectedSquares[0].gameObject.transform.position.x, selectedSquares[0].gameObject.transform.position.y,1);
         Vector3 square2 = new Vector3(selectedSquares[1].gameObject.transform.position.x, selectedSquares[1].gameObject.transform.position.y, 1);
-        if (Vector2.Distance(square1,square2) <= 1.8f)
+        if (Vector2.Distance(square1,square2) <= 1.2f)
         {
             selectedSquares[0].transform.DOMove(square2, 0.2f);
-            selectedSquares[1].transform.DOMove(square1, 0.2f).OnComplete(SquareManager.instance.CheckAllSquares);
-
+            selectedSquares[1].transform.DOMove(square1, 0.2f).OnComplete(() => EventManager.instance.onSquareMoved?.Invoke());
         }
         ResetSelectedSquares();
     }

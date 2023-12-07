@@ -11,14 +11,16 @@ public class Square : MonoBehaviour
     [SerializeField] private int sameTypeCount = 1;
     private void Start()
     {
+        EventManager.instance.onSquareMoved += CheckNeighboors;
+        EventManager.instance.onSquareMoved += CheckSameTypeNeighboor;
         CheckNeighboors();
+        CheckSameTypeNeighboor();
     }
-    private void FixedUpdate()
+    
+    private void OnDisable()
     {
-        if(GameManager.instance.gameState == GameState.Placement)
-        {
-            CheckNeighboors();
-        }
+        EventManager.instance.onSquareMoved -= CheckNeighboors;
+        EventManager.instance.onSquareMoved -= CheckSameTypeNeighboor;
     }
 
     public void CheckNeighboors()
@@ -46,9 +48,9 @@ public class Square : MonoBehaviour
         {
             neighboors[3] = downHit.transform.gameObject.GetComponent<Square>();
         }
-        CheckSameTypeNeighboor();
+        Debug.Log("Checked");
     }
-    private void CheckSameTypeNeighboor()
+    public void CheckSameTypeNeighboor()
     {
         if (!neighboors[0].IsUnityNull() && !neighboors[1].IsUnityNull())
         {
@@ -68,6 +70,7 @@ public class Square : MonoBehaviour
                 Crack();
             }
         }
+        GameManager.instance.ChangeGameState(GameState.Playing);
     }
     private void OnMouseDown()
     {
