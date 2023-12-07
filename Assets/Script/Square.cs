@@ -8,6 +8,7 @@ public class Square : MonoBehaviour
     RaycastHit2D leftHit, rightHit, upHit, downHit;
     [SerializeField]Square[] neighboors;
     [SerializeField]private SquareType type;
+    [SerializeField] private int sameTypeCount = 1;
     private void Start()
     {
         CheckNeighboors();
@@ -20,8 +21,9 @@ public class Square : MonoBehaviour
         }
     }
 
-    void CheckNeighboors()
+    public void CheckNeighboors()
     {
+        sameTypeCount = 1;
         neighboors = new Square[4];
         leftHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x - 0.8f, gameObject.transform.position.y), -transform.right);
         rightHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x + 0.8f, gameObject.transform.position.y), transform.right);
@@ -44,7 +46,28 @@ public class Square : MonoBehaviour
         {
             neighboors[3] = downHit.transform.gameObject.GetComponent<Square>();
         }
-        
+        CheckSameTypeNeighboor();
+    }
+    private void CheckSameTypeNeighboor()
+    {
+        if (!neighboors[0].IsUnityNull() && !neighboors[1].IsUnityNull())
+        {
+            if (neighboors[0].type == this.type && neighboors[1].type == this.type)
+            {
+                neighboors[0].Crack();
+                neighboors[1].Crack();
+                Crack();
+            }
+        }
+        if (!neighboors[2].IsUnityNull() && !neighboors[3].IsUnityNull())
+        {
+            if (neighboors[2].type == this.type && neighboors[3].type == this.type)
+            {
+                neighboors[2].Crack();
+                neighboors[3].Crack();
+                Crack();
+            }
+        }
     }
     private void OnMouseDown()
     {
@@ -66,6 +89,10 @@ public class Square : MonoBehaviour
     public SquareType GetSquareType()
     {
         return type;
+    }
+    public void Crack()
+    {
+        gameObject.SetActive(false);
     }
 
 

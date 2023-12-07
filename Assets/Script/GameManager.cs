@@ -37,7 +37,8 @@ public class GameManager : MonoBehaviour
         if (Vector2.Distance(square1,square2) <= 1.8f)
         {
             selectedSquares[0].transform.DOMove(square2, 0.2f);
-            selectedSquares[1].transform.DOMove(square1, 0.2f);
+            selectedSquares[1].transform.DOMove(square1, 0.2f).OnComplete(SquareManager.instance.CheckAllSquares);
+
         }
         ResetSelectedSquares();
     }
@@ -50,4 +51,5 @@ public class GameManager : MonoBehaviour
     {
         gameState = newState;
     }
+
 }
