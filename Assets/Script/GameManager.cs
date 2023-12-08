@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     {
         selectedSquares = new Square[2];
         EventManager.instance.onSecondSquareSelected += ChangeSelected;
+        StartCoroutine(SpawnCrackedSquares());
     }
     private void OnDestroy()
     {
@@ -40,6 +41,14 @@ public class GameManager : MonoBehaviour
             selectedSquares[1].transform.DOMove(square1, 0.2f).OnComplete(() => EventManager.instance.onSquareMoved?.Invoke());
         }
         ResetSelectedSquares();
+    }
+    IEnumerator SpawnCrackedSquares()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(.25f);
+            EventManager.instance.onSpawned?.Invoke();
+        }
     }
     private void ResetSelectedSquares()
     {

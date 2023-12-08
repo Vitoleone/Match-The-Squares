@@ -1,7 +1,7 @@
 public enum SquareType
 {
-    Blue = 1,
-    Green = 2,
-    Red = 3,
-    Purple = 4
+    Blue = 0,
+    Green = 1,
+    Red = 2,
+    Purple = 3
 }

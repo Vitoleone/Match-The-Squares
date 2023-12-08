@@ -10,6 +10,7 @@ public class Square : MonoBehaviour
     [SerializeField]Square[] neighboors;
     [SerializeField]private SquareType type;
     [SerializeField] private int sameTypeCount = 1;
+    bool spawned = true;
     private void Start()
     {
         EventManager.instance.onSquareMoved += CheckNeighboors;
@@ -18,12 +19,21 @@ public class Square : MonoBehaviour
         CheckNeighboors();
         CheckSameTypeNeighboor();
     }
-    
+    private void OnEnable()
+    {
+        spawned = true;
+        EventManager.instance.onSquareMoved += CheckNeighboors;
+        EventManager.instance.onSquareMoved += CheckSameTypeNeighboor;
+    }
+
     private void OnDisable()
     {
         EventManager.instance.onSquareMoved -= CheckNeighboors;
         EventManager.instance.onSquareMoved -= CheckSameTypeNeighboor;
-        
+    }
+    private void OnMouseDown()
+    {
+        SelectSquare();
     }
     private void OnDrawGizmos()
     {
@@ -42,23 +52,22 @@ public class Square : MonoBehaviour
         upHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + 0.4f), transform.up * 0.5f, 0.4f);
         downHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 0.4f), -transform.up * 0.5f, 0.4f);
 
-        if(leftHit.collider != null && leftHit.transform.gameObject != gameObject)
+        if(leftHit.collider != null && leftHit.collider.gameObject.GetComponent<Square>().spawned)
         {
             neighboors[0] = leftHit.transform.gameObject.GetComponent<Square>();
         }
-        if (rightHit.collider != null && rightHit.transform.gameObject != gameObject)
+        if (rightHit.collider != null && rightHit.collider.gameObject.GetComponent<Square>().spawned)
         {
             neighboors[1] = rightHit.transform.gameObject.GetComponent<Square>();
         }
-        if (upHit.collider != null && upHit.transform.gameObject != gameObject)
+        if (upHit.collider != null && upHit.collider.gameObject.GetComponent<Square>().spawned)
         {
             neighboors[2] = upHit.transform.gameObject.GetComponent<Square>();
         }
-        if (downHit.collider != null && downHit.transform.gameObject != gameObject)
+        if (downHit.collider != null && downHit.collider.gameObject.GetComponent<Square>().spawned)
         {
             neighboors[3] = downHit.transform.gameObject.GetComponent<Square>();
         }
-        Debug.Log("Checked");
     }
     public void CheckSameTypeNeighboor()
     {
@@ -83,10 +92,7 @@ public class Square : MonoBehaviour
         
         GameManager.instance.ChangeGameState(GameState.Playing);
     }
-    private void OnMouseDown()
-    {
-        SelectSquare();
-    }
+
     void SelectSquare()
     {
         if(!GameManager.instance.isSquareSelected)
@@ -104,15 +110,22 @@ public class Square : MonoBehaviour
     {
         return type;
     }
+    public void ChangeSquareType(SquareType newType)
+    {
+        type = newType;
+    }
     public void Crack()
     {
         transform.DOScale(.3f, .25f).OnComplete(() =>
         {
             //Do particles and deactive
             EventManager.instance.onCracked?.Invoke();
+            spawned = false;
+            SquareManager.instance.crackedSquares.Add(this);
             gameObject.SetActive(false);
         });
     }
+   
 
 
 

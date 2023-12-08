@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   neighboors: []
-  type: 3
+  type: 2
   sameTypeCount: 1
 --- !u!61 &-6291181863844938422
 BoxCollider2D:

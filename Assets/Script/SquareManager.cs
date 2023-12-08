@@ -1,3 +1,4 @@
+using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,7 @@ public class SquareManager : MonoBehaviour
     [SerializeField] private int width;
     [SerializeField] private int height;
     [SerializeField]Square[,] squareList;
+    public List<Square> crackedSquares = new List<Square>();
 
     private void Awake()
     {
@@ -20,6 +22,7 @@ public class SquareManager : MonoBehaviour
         GenerateSquares();
         CheckAllSquares();
         EventManager.instance.onCracked += CheckAllSquares;
+        EventManager.instance.onSpawned += SpawnAllCrackedSquares;
     }
 
     [NaughtyAttributes.Button]
@@ -40,7 +43,7 @@ public class SquareManager : MonoBehaviour
         Camera.main.transform.position = new Vector3(height / 2 - 0.5f, width / 2 - 0.5f,0);
         GameManager.instance.ChangeGameState(GameState.Playing);
     }
-    public void CheckAllSquares()
+    void CheckAllSquares()
     {
         for (int y = 0; y < height; y++)
         {
@@ -50,6 +53,31 @@ public class SquareManager : MonoBehaviour
                 squareList[y, x].CheckNeighboors();
             }
         }
+    }
+    void SpawnAllCrackedSquares()
+    {
+        Debug.Log(crackedSquares.Count);
+        if(crackedSquares.Count > 0)
+        {
+            foreach (var square in crackedSquares)
+            {
+                Spawn(square);
+            }
+            crackedSquares.Clear();
+        }
+        
+    }
+    void Spawn(Square square)
+    {
+        square.gameObject.SetActive(true);
+        ChangeSquareTypeRandom(square);
+        square.transform.DOScale(.75f, 0.25f).OnComplete(() => EventManager.instance.onSquareMoved?.Invoke());
+    }
+    void ChangeSquareTypeRandom(Square square)
+    {
+        int randomNumber = Random.Range(0, squarePrefab.Length);
+        square.ChangeSquareType(squarePrefab[randomNumber].GetComponent<Square>().GetSquareType());
+        square.gameObject.GetComponent<SpriteRenderer>().color = squarePrefab[randomNumber].gameObject.GetComponent<SpriteRenderer>().color;
     }
 
 }
