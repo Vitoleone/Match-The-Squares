@@ -9,7 +9,7 @@ public class Square : MonoBehaviour
     RaycastHit2D leftHit, rightHit, upHit, downHit;
     [SerializeField]Square[] neighboors;
     [SerializeField]private SquareType type;
-    [SerializeField] private int sameTypeCount = 1;
+    [SerializeField] private GameObject crackedEffect;
     bool spawned = true;
     private void Start()
     {
@@ -45,7 +45,6 @@ public class Square : MonoBehaviour
     [NaughtyAttributes.Button]
     public void CheckNeighboors()
     {
-        sameTypeCount = 1;
         neighboors = new Square[4];
         leftHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x - 0.4f, gameObject.transform.position.y), -transform.right*0.5f, 0.4f);
         rightHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x + 0.4f, gameObject.transform.position.y), transform.right * 0.5f,0.4f);
@@ -119,6 +118,7 @@ public class Square : MonoBehaviour
         transform.DOScale(.3f, .25f).OnComplete(() =>
         {
             //Do particles and deactive
+            crackedEffect.gameObject.SetActive(true);
             EventManager.instance.onCracked?.Invoke();
             spawned = false;
             SquareManager.instance.crackedSquares.Add(this);

@@ -175,6 +175,7 @@ MonoBehaviour:
   spawnPosition: {fileID: 716947152}
   width: 5
   height: 5
+  crackedSquares: []
 --- !u!1 &255211818
 GameObject:
   m_ObjectHideFlags: 0
