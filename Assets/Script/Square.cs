@@ -33,7 +33,7 @@ public class Square : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        SelectSquare();
+        SquareManager.instance.SelectSquare(this);
     }
     private void OnDrawGizmos()
     {
@@ -92,19 +92,6 @@ public class Square : MonoBehaviour
         GameManager.instance.ChangeGameState(GameState.Playing);
     }
 
-    void SelectSquare()
-    {
-        if(!GameManager.instance.isSquareSelected)
-        {
-            GameManager.instance.isSquareSelected = true;
-            GameManager.instance.selectedSquares[0] = this;
-        }
-        else
-        {
-            GameManager.instance.selectedSquares[1] = this;
-            EventManager.instance.onSecondSquareSelected?.Invoke();
-        }
-    }
     public SquareType GetSquareType()
     {
         return type;
@@ -115,19 +102,25 @@ public class Square : MonoBehaviour
     }
     public void Crack()
     {
+        crackedEffect.SetActive(true);
         transform.DOScale(.3f, .25f).OnComplete(() =>
         {
             //Do particles and deactive
-            crackedEffect.gameObject.SetActive(true);
+            
             EventManager.instance.onCracked?.Invoke();
             spawned = false;
             SquareManager.instance.crackedSquares.Add(this);
+            crackedEffect.SetActive(false);
             gameObject.SetActive(false);
         });
     }
-   
-
-
-
+    public ParticleSystemRenderer GetParticleRenderer()
+    {
+        return crackedEffect.GetComponent<ParticleSystemRenderer>();
+    }
+    public void ChangeCrackParticleMaterial(ParticleSystemRenderer particle )
+    {
+        crackedEffect.GetComponent<ParticleSystemRenderer>().sharedMaterial = particle.sharedMaterial;
+    }
 
 }

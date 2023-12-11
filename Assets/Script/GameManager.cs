@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     public GameState gameState = GameState.Placement;
     public bool isSquareSelected;
     public Square[] selectedSquares;
-
+    public Material[] materials;
     private void Awake()
     {
         if(instance == null)
@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
     private void Start()
     {
         selectedSquares = new Square[2];
