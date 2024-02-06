@@ -3,9 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SquareManager : MonoBehaviour
+public class SquareManager : Singleton<SquareManager>
 {
-   public static SquareManager instance;
    [SerializeField]private GameObject[] squarePrefab;
    [SerializeField]private Camera camera;
    [SerializeField]private Transform spawnPosition;
@@ -13,11 +12,6 @@ public class SquareManager : MonoBehaviour
     [SerializeField] private int height;
     [SerializeField]Square[,] squareList;
     public List<Square> crackedSquares = new List<Square>();
-
-    private void Awake()
-    {
-        instance = this;
-    }
     private void Start()
     {
         GenerateSquares();
