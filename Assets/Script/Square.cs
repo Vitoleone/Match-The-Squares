@@ -10,6 +10,7 @@ public class Square : MonoBehaviour
     [SerializeField]Square[] neighboors;
     [SerializeField]private SquareType type;
     [SerializeField] private GameObject crackedEffect;
+    Tween crackTween;
     bool spawned = true;
     private void Start()
     {
@@ -103,7 +104,7 @@ public class Square : MonoBehaviour
     public void Crack()
     {
         crackedEffect.SetActive(true);
-        transform.DOScale(.3f, .25f).OnComplete(() =>
+        crackTween = transform.DOScale(.3f, .25f).OnComplete(() =>
         {
             //Do particles and deactive
             
@@ -111,7 +112,9 @@ public class Square : MonoBehaviour
             spawned = false;
             SquareManager.instance.crackedSquares.Add(this);
             crackedEffect.SetActive(false);
+            crackTween.Kill();
             gameObject.SetActive(false);
+
         });
     }
     public ParticleSystemRenderer GetParticleRenderer()
