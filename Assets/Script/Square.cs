@@ -1,6 +1,7 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -13,14 +14,16 @@ public class Square : MonoBehaviour
     Tween crackTween;
     bool spawned = true;
     private void Start()
-    {  
+    {
+        
+
         CheckNeighboors();
         CheckSameTypeNeighboor();
         spawned = true;
         EventManager.instance.onSquareMoved += CheckNeighboors;
         EventManager.instance.onSquareMoved += CheckSameTypeNeighboor;
         EventManager.instance.onGetScore += GetScoreValueByType;
-
+        DOTween.SetTweensCapacity(100,100);
     }
     private void OnEnable()
     {
@@ -47,6 +50,7 @@ public class Square : MonoBehaviour
             SquareManager.instance.SelectSquare(this);
         }
     }
+   
     private void OnDrawGizmos()
     {
         Debug.DrawRay(new Vector2(gameObject.transform.position.x - 0.4f, gameObject.transform.position.y), -transform.right * 0.5f);
@@ -86,18 +90,18 @@ public class Square : MonoBehaviour
         {
             if (neighboors[0].type == this.type && neighboors[1].type == this.type)
             {
-                neighboors[0].Crack();
-                neighboors[1].Crack();
-                Crack();
+                SquareManager.instance.crackedSquares.Add(this);
+                SquareManager.instance.crackedSquares.Add(neighboors[0]);
+                SquareManager.instance.crackedSquares.Add(neighboors[1]);
             }
         }
         if (!neighboors[2].IsUnityNull() && !neighboors[3].IsUnityNull())
         {
             if (neighboors[2].type == this.type && neighboors[3].type == this.type)
             {
-                neighboors[2].Crack();
-                neighboors[3].Crack();
-                Crack();
+                SquareManager.instance.crackedSquares.Add(this);
+                SquareManager.instance.crackedSquares.Add(neighboors[3]);
+                SquareManager.instance.crackedSquares.Add(neighboors[2]);
             }
         }
         
@@ -116,18 +120,25 @@ public class Square : MonoBehaviour
         GameManager.instance.ChangeGameState(GameState.Breaking);
         UIManager.instance.AddScore(EventManager.instance.onGetScore, this.type);
         crackedEffect.Play();
-        crackTween = transform.DOScale(.3f, .25f).OnComplete(() =>
+        if(crackTween != null)
         {
-            //Do particles and deactive
-            
-            EventManager.instance.onCracked?.Invoke();
-            spawned = false;
-            SquareManager.instance.crackedSquares.Add(this);
-            //crackedEffect.SetActive(false);
-            crackTween.Kill();
-            gameObject.SetActive(false);
+            crackTween.Restart();
+        }
+        else
+        {
+            crackTween = transform.DOScale(.3f, .25f).OnComplete(() =>
+            {
+                //Do particles and deactive
+                spawned = false;
+                //crackedEffect.SetActive(false);
+                gameObject.SetActive(false);
 
-        });
+            })
+            .SetAutoKill(false)
+            .SetRecyclable(true)
+            .Pause();
+        }
+        
     }
     public ParticleSystemRenderer GetParticleRenderer()
     {

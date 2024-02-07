@@ -13,9 +13,16 @@ public class GameManager : Singleton<GameManager>
 
     private void Start()
     {
+        // VSync'i devre dýþý býrak
+        QualitySettings.vSyncCount = 0;
+
+        // FPS deðerini 60 olarak sabitle
+        Application.targetFrameRate = 60;
+
         selectedSquares = new Square[2];
         EventManager.instance.onSecondSquareSelected += ChangeSelected;
         StartCoroutine(SpawnCrackedSquares());
+        StartCoroutine(CrackSquares());
         
     }
     private void OnDestroy()
@@ -39,6 +46,14 @@ public class GameManager : Singleton<GameManager>
         {
             yield return new WaitForSeconds(.35f);
             EventManager.instance.onSpawned?.Invoke();
+        }
+    }
+    IEnumerator CrackSquares()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(.35f);
+            EventManager.instance.onCracked?.Invoke();
         }
     }
     private void ResetSelectedSquares()

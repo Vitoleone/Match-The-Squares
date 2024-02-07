@@ -14,14 +14,16 @@ public class SquareManager : Singleton<SquareManager>
     [SerializeField] private int height;
     [SerializeField]Square[,] squareList;
     public List<Square> crackedSquares = new List<Square>();
+    public List<Square> spawnedSquares = new List<Square>();
  
     private void Start()
     {
         squareList = new Square[height, width];
+        DOTween.SetTweensCapacity(100, 100);
         GetSquares();
         CheckAllSquares();
-        EventManager.instance.onCracked += CheckAllSquares;
         EventManager.instance.onSpawned += SpawnAllCrackedSquares;
+        EventManager.instance.onCracked += CrackAllCrackedSquares;
     }
     public void SelectSquare(Square selectedSquare)
     {
@@ -83,29 +85,48 @@ public class SquareManager : Singleton<SquareManager>
                 squareList[y, x].CheckNeighboors();
             }
         }
+        Debug.Log("Kontrol edildi");
     }
     void SpawnAllCrackedSquares()
     {
-        if(crackedSquares.Count > 0)
+        if(spawnedSquares.Count > 0)
         {
             GameManager.instance.ChangeGameState(GameState.Placement);
-            foreach (var square in crackedSquares)
+            foreach (var square in spawnedSquares)
             {
                 Spawn(square);
             }
-            crackedSquares.Clear();
+            spawnedSquares.Clear();
+            CheckAllSquares();
         }
         else
         {
             GameManager.instance.ChangeGameState(GameState.Playing);
         }
-        
+    }
+    void CrackAllCrackedSquares()
+    {
+        if (crackedSquares.Count > 0)
+        {
+            GameManager.instance.ChangeGameState(GameState.Placement);
+            foreach (var square in crackedSquares)
+            {
+                square.Crack();
+                spawnedSquares.Add(square);
+            }
+            crackedSquares.Clear();
+            CheckAllSquares();
+        }
+        else
+        {
+            GameManager.instance.ChangeGameState(GameState.Playing);
+        }
     }
     void Spawn(Square square)
     {
         ChangeSquareTypeRandom(square);
         square.gameObject.SetActive(true);
-        square.transform.DOScale(.75f, 0.35f).OnComplete(() => EventManager.instance.onSquareMoved?.Invoke());
+        square.transform.DOScale(.75f, 0.25f).OnComplete(() => EventManager.instance.onSquareMoved?.Invoke());
     }
     void ChangeSquareTypeRandom(Square square)
     {
