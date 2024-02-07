@@ -82,14 +82,18 @@ public class SquareManager : Singleton<SquareManager>
     }
     void SpawnAllCrackedSquares()
     {
-        Debug.Log(crackedSquares.Count);
         if(crackedSquares.Count > 0)
         {
+            GameManager.instance.ChangeGameState(GameState.Placement);
             foreach (var square in crackedSquares)
             {
                 Spawn(square);
             }
             crackedSquares.Clear();
+        }
+        else
+        {
+            GameManager.instance.ChangeGameState(GameState.Playing);
         }
         
     }
@@ -97,7 +101,7 @@ public class SquareManager : Singleton<SquareManager>
     {
         ChangeSquareTypeRandom(square);
         square.gameObject.SetActive(true);
-        square.transform.DOScale(.75f, 0.25f).OnComplete(() => EventManager.instance.onSquareMoved?.Invoke());
+        square.transform.DOScale(.75f, 0.35f).OnComplete(() => EventManager.instance.onSquareMoved?.Invoke());
     }
     void ChangeSquareTypeRandom(Square square)
     {

@@ -9,7 +9,7 @@ public class Square : MonoBehaviour
     RaycastHit2D leftHit, rightHit, upHit, downHit;
     [SerializeField]Square[] neighboors;
     [SerializeField]private SquareType type;
-    [SerializeField] private GameObject crackedEffect;
+    [SerializeField] private ParticleSystem crackedEffect;
     Tween crackTween;
     bool spawned = true;
     private void Start()
@@ -33,7 +33,10 @@ public class Square : MonoBehaviour
     }
     private void OnMouseDown()
     {
-        SquareManager.instance.SelectSquare(this);
+        if(GameManager.instance.gameState == GameState.Playing)
+        {
+            SquareManager.instance.SelectSquare(this);
+        }
     }
     private void OnDrawGizmos()
     {
@@ -89,7 +92,6 @@ public class Square : MonoBehaviour
             }
         }
         
-        GameManager.instance.ChangeGameState(GameState.Playing);
     }
 
     public SquareType GetSquareType()
@@ -102,8 +104,9 @@ public class Square : MonoBehaviour
     }
     public void Crack()
     {
+        GameManager.instance.ChangeGameState(GameState.Breaking);
         UIManager.instance.AddScore(EventManager.instance.onGetScore, this.type);
-        crackedEffect.GetComponent<ParticleSystem>().Play();
+        crackedEffect.Play();
         crackTween = transform.DOScale(.3f, .25f).OnComplete(() =>
         {
             //Do particles and deactive

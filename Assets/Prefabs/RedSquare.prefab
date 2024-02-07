@@ -102,7 +102,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   neighboors: []
   type: 2
-  crackedEffect: {fileID: 917220218898850838}
+  crackedEffect: {fileID: 3055565210237807678}
 --- !u!61 &-6291181863844938422
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -193,7 +193,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1902714789382953394, guid: 2328484638e25624789d1563ea206f6a, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5131152439160944196, guid: 2328484638e25624789d1563ea206f6a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -240,9 +240,9 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2328484638e25624789d1563ea206f6a, type: 3}
---- !u!1 &917220218898850838 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1902714789382953394, guid: 2328484638e25624789d1563ea206f6a, type: 3}
+--- !u!198 &3055565210237807678 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 4376055961963205018, guid: 2328484638e25624789d1563ea206f6a, type: 3}
   m_PrefabInstance: {fileID: 1647565298515590564}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &5902196138715974624 stripped
