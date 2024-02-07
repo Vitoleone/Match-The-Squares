@@ -106,6 +106,5 @@ public class SquareManager : Singleton<SquareManager>
         square.ChangeCrackParticleMaterial(squarePrefab[randomNumber].gameObject.GetComponent<Square>().GetParticleRenderer());
         square.gameObject.GetComponent<SpriteRenderer>().sharedMaterial = squarePrefab[randomNumber].gameObject.GetComponent<SpriteRenderer>().sharedMaterial;
     }
-
     
 }

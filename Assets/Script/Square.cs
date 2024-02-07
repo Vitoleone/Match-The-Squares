@@ -13,10 +13,7 @@ public class Square : MonoBehaviour
     Tween crackTween;
     bool spawned = true;
     private void Start()
-    {
-        EventManager.instance.onSquareMoved += CheckNeighboors;
-        EventManager.instance.onSquareMoved += CheckSameTypeNeighboor;
-       
+    {  
         CheckNeighboors();
         CheckSameTypeNeighboor();
     }
@@ -25,12 +22,14 @@ public class Square : MonoBehaviour
         spawned = true;
         EventManager.instance.onSquareMoved += CheckNeighboors;
         EventManager.instance.onSquareMoved += CheckSameTypeNeighboor;
+        EventManager.instance.onGetScore += GetScoreValueByType;
     }
 
     private void OnDisable()
     {
         EventManager.instance.onSquareMoved -= CheckNeighboors;
         EventManager.instance.onSquareMoved -= CheckSameTypeNeighboor;
+        EventManager.instance.onGetScore -= GetScoreValueByType;
     }
     private void OnMouseDown()
     {
@@ -103,7 +102,8 @@ public class Square : MonoBehaviour
     }
     public void Crack()
     {
-        crackedEffect.SetActive(true);
+        UIManager.instance.AddScore(EventManager.instance.onGetScore, this.type);
+        crackedEffect.GetComponent<ParticleSystem>().Play();
         crackTween = transform.DOScale(.3f, .25f).OnComplete(() =>
         {
             //Do particles and deactive
@@ -111,7 +111,7 @@ public class Square : MonoBehaviour
             EventManager.instance.onCracked?.Invoke();
             spawned = false;
             SquareManager.instance.crackedSquares.Add(this);
-            crackedEffect.SetActive(false);
+            //crackedEffect.SetActive(false);
             crackTween.Kill();
             gameObject.SetActive(false);
 
@@ -124,6 +124,10 @@ public class Square : MonoBehaviour
     public void ChangeCrackParticleMaterial(ParticleSystemRenderer particle )
     {
         crackedEffect.GetComponent<ParticleSystemRenderer>().sharedMaterial = particle.sharedMaterial;
+    }
+    int GetScoreValueByType(SquareType type)
+    {
+        return (((int)type) + 1) * 5;
     }
 
 }
