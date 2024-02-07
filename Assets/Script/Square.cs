@@ -16,13 +16,22 @@ public class Square : MonoBehaviour
     {  
         CheckNeighboors();
         CheckSameTypeNeighboor();
-    }
-    private void OnEnable()
-    {
         spawned = true;
         EventManager.instance.onSquareMoved += CheckNeighboors;
         EventManager.instance.onSquareMoved += CheckSameTypeNeighboor;
         EventManager.instance.onGetScore += GetScoreValueByType;
+
+    }
+    private void OnEnable()
+    {
+        if (EventManager.instance != null)
+        {
+            spawned = true;
+            EventManager.instance.onSquareMoved += CheckNeighboors;
+            EventManager.instance.onSquareMoved += CheckSameTypeNeighboor;
+            EventManager.instance.onGetScore += GetScoreValueByType;
+        }
+        
     }
 
     private void OnDisable()

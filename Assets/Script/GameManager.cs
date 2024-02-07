@@ -16,7 +16,7 @@ public class GameManager : Singleton<GameManager>
         selectedSquares = new Square[2];
         EventManager.instance.onSecondSquareSelected += ChangeSelected;
         StartCoroutine(SpawnCrackedSquares());
-        GameManager.instance.ChangeGameState(GameState.Playing);
+        
     }
     private void OnDestroy()
     {

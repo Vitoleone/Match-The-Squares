@@ -1,20 +1,24 @@
 using DG.Tweening;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SquareManager : Singleton<SquareManager>
 {
    [SerializeField]private GameObject[] squarePrefab;
+    [SerializeField] GameObject squares;
    [SerializeField]private Camera camera;
    [SerializeField]private Transform spawnPosition;
     [SerializeField] private int width;
     [SerializeField] private int height;
     [SerializeField]Square[,] squareList;
     public List<Square> crackedSquares = new List<Square>();
+ 
     private void Start()
     {
-        GenerateSquares();
+        squareList = new Square[height, width];
+        GetSquares();
         CheckAllSquares();
         EventManager.instance.onCracked += CheckAllSquares;
         EventManager.instance.onSpawned += SpawnAllCrackedSquares;
@@ -111,4 +115,18 @@ public class SquareManager : Singleton<SquareManager>
         square.gameObject.GetComponent<SpriteRenderer>().sharedMaterial = squarePrefab[randomNumber].gameObject.GetComponent<SpriteRenderer>().sharedMaterial;
     }
     
+    void GetSquares()
+    {
+        Square[] sqr = squares.GetComponentsInChildren<Square>();
+        int i = 0;
+        Debug.Log(sqr.Length);
+        for (int y = 0; y < sqr.Length/5; y++)
+        {
+            for (int x = 0; x < 5; x++)
+            {
+                squareList[y,x] = sqr[i];
+                i++;
+            }
+        }
+    }
 }
