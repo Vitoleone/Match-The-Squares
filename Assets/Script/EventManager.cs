@@ -7,7 +7,7 @@ public class EventManager : Singleton<EventManager>
 {
     //In-Game
     public delegate void OnSecondSquareSelected();
-    public delegate void OnSquareMoved();
+    public delegate void OnSquareMoved(Square square1, Square square2);
     public delegate void OnCracked();
     public delegate void OnSpawned();
     public OnSecondSquareSelected onSecondSquareSelected;

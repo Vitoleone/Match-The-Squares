@@ -1,10 +1,10 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-
 public class Square : MonoBehaviour
 {
     RaycastHit2D leftHit, rightHit, upHit, downHit;
@@ -13,15 +13,10 @@ public class Square : MonoBehaviour
     [SerializeField] private ParticleSystem crackedEffect;
     Tween crackTween;
     bool spawned = true;
+    public int x, y;
     private void Start()
     {
-        
-
-        CheckNeighboors();
-        CheckSameTypeNeighboor();
         spawned = true;
-        EventManager.instance.onSquareMoved += CheckNeighboors;
-        EventManager.instance.onSquareMoved += CheckSameTypeNeighboor;
         EventManager.instance.onGetScore += GetScoreValueByType;
         DOTween.SetTweensCapacity(100,100);
     }
@@ -30,8 +25,6 @@ public class Square : MonoBehaviour
         if (EventManager.instance != null)
         {
             spawned = true;
-            EventManager.instance.onSquareMoved += CheckNeighboors;
-            EventManager.instance.onSquareMoved += CheckSameTypeNeighboor;
             EventManager.instance.onGetScore += GetScoreValueByType;
         }
         
@@ -39,8 +32,6 @@ public class Square : MonoBehaviour
 
     private void OnDisable()
     {
-        EventManager.instance.onSquareMoved -= CheckNeighboors;
-        EventManager.instance.onSquareMoved -= CheckSameTypeNeighboor;
         EventManager.instance.onGetScore -= GetScoreValueByType;
     }
     private void OnMouseDown()
@@ -51,38 +42,18 @@ public class Square : MonoBehaviour
         }
     }
    
-    private void OnDrawGizmos()
-    {
-        Debug.DrawRay(new Vector2(gameObject.transform.position.x - 0.4f, gameObject.transform.position.y), -transform.right * 0.5f);
-        Debug.DrawRay(new Vector2(gameObject.transform.position.x + 0.4f, gameObject.transform.position.y), transform.right * 0.5f);
-        Debug.DrawRay(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + 0.4f), transform.up * 0.5f);
-        Debug.DrawRay(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 0.4f), -transform.up * 0.5f);
-    }
     [NaughtyAttributes.Button]
     public void CheckNeighboors()
     {
         neighboors = new Square[4];
-        leftHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x - 0.4f, gameObject.transform.position.y), -transform.right*0.5f, 0.4f);
-        rightHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x + 0.4f, gameObject.transform.position.y), transform.right * 0.5f,0.4f);
-        upHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y + 0.4f), transform.up * 0.5f, 0.4f);
-        downHit = Physics2D.Raycast(new Vector2(gameObject.transform.position.x, gameObject.transform.position.y - 0.4f), -transform.up * 0.5f, 0.4f);
+        int length = SquareManager.instance.squareList.GetLength(1) - 1;
 
-        if(leftHit.collider != null && leftHit.collider.gameObject.GetComponent<Square>().spawned)
-        {
-            neighboors[0] = leftHit.transform.gameObject.GetComponent<Square>();
-        }
-        if (rightHit.collider != null && rightHit.collider.gameObject.GetComponent<Square>().spawned)
-        {
-            neighboors[1] = rightHit.transform.gameObject.GetComponent<Square>();
-        }
-        if (upHit.collider != null && upHit.collider.gameObject.GetComponent<Square>().spawned)
-        {
-            neighboors[2] = upHit.transform.gameObject.GetComponent<Square>();
-        }
-        if (downHit.collider != null && downHit.collider.gameObject.GetComponent<Square>().spawned)
-        {
-            neighboors[3] = downHit.transform.gameObject.GetComponent<Square>();
-        }
+        neighboors[0] = x - 1 <= length && x-1 >= 0 ? SquareManager.instance.squareList[y, x - 1]: null;
+        neighboors[1] = x + 1 <= length ? SquareManager.instance.squareList[y, x + 1]: null;
+        neighboors[2] = y - 1 <= length && y - 1 >= 0 ? SquareManager.instance.squareList[y - 1, x]: null;
+        neighboors[3] = y + 1 <= length ? SquareManager.instance.squareList[y + 1, x]: null;
+        
+        CheckSameTypeNeighboor();
     }
     public void CheckSameTypeNeighboor()
     {
@@ -90,21 +61,20 @@ public class Square : MonoBehaviour
         {
             if (neighboors[0].type == this.type && neighboors[1].type == this.type)
             {
-                SquareManager.instance.crackedSquares.Add(this);
-                SquareManager.instance.crackedSquares.Add(neighboors[0]);
-                SquareManager.instance.crackedSquares.Add(neighboors[1]);
+                neighboors[0].Crack();
+                neighboors[1].Crack();
+                Crack();
             }
         }
         if (!neighboors[2].IsUnityNull() && !neighboors[3].IsUnityNull())
         {
             if (neighboors[2].type == this.type && neighboors[3].type == this.type)
             {
-                SquareManager.instance.crackedSquares.Add(this);
-                SquareManager.instance.crackedSquares.Add(neighboors[3]);
-                SquareManager.instance.crackedSquares.Add(neighboors[2]);
+                neighboors[2].Crack();
+                neighboors[3].Crack();
+                Crack();
             }
         }
-        
     }
 
     public SquareType GetSquareType()

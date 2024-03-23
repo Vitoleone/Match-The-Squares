@@ -230,6 +230,8 @@ MonoBehaviour:
   neighboors: []
   type: 2
   crackedEffect: {fileID: 1656822031}
+  x: 0
+  y: 0
 --- !u!212 &47634872
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -405,6 +407,8 @@ MonoBehaviour:
   neighboors: []
   type: 2
   crackedEffect: {fileID: 2142915634}
+  x: 0
+  y: 0
 --- !u!212 &59587031
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -527,6 +531,37 @@ MonoBehaviour:
   spawnPosition: {fileID: 716947152}
   width: 5
   height: 6
+  allSquares:
+  - {fileID: 1128208221}
+  - {fileID: 2011250590}
+  - {fileID: 1859964973}
+  - {fileID: 875697206}
+  - {fileID: 2068810210}
+  - {fileID: 1065512202}
+  - {fileID: 1959483773}
+  - {fileID: 47634871}
+  - {fileID: 1327182079}
+  - {fileID: 1916291310}
+  - {fileID: 1030703048}
+  - {fileID: 777580730}
+  - {fileID: 1337850313}
+  - {fileID: 1133674693}
+  - {fileID: 2122674969}
+  - {fileID: 1985713413}
+  - {fileID: 574179262}
+  - {fileID: 385891450}
+  - {fileID: 1230761923}
+  - {fileID: 1818609326}
+  - {fileID: 1266240989}
+  - {fileID: 2142157262}
+  - {fileID: 59587030}
+  - {fileID: 530839270}
+  - {fileID: 1902721540}
+  - {fileID: 2131662394}
+  - {fileID: 1551451287}
+  - {fileID: 661792185}
+  - {fileID: 1918572236}
+  - {fileID: 1151888229}
   crackedSquares: []
   spawnedSquares: []
 --- !u!1 &135073623
@@ -15169,7 +15204,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 487b4d0d53fab894f935b64d527f6992, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameState: 1
+  gameState: 2
   isSquareSelected: 0
   selectedSquares: []
   materials:
@@ -15177,6 +15212,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: ef31aa94f6116574193236791f061063, type: 2}
   - {fileID: 2100000, guid: 6756af14257ff564eb9d3ae2d0fc6c6b, type: 2}
   - {fileID: 2100000, guid: e2baafe7c0802e64c91d68f333623415, type: 2}
+  canCheckNeighboor: 0
 --- !u!1 &376044287
 GameObject:
   m_ObjectHideFlags: 0
@@ -20115,6 +20151,8 @@ MonoBehaviour:
   neighboors: []
   type: 3
   crackedEffect: {fileID: 873106198}
+  x: 0
+  y: 0
 --- !u!212 &385891451
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -39660,6 +39698,8 @@ MonoBehaviour:
   neighboors: []
   type: 0
   crackedEffect: {fileID: 999077266}
+  x: 0
+  y: 0
 --- !u!212 &530839271
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -54328,6 +54368,8 @@ MonoBehaviour:
   neighboors: []
   type: 1
   crackedEffect: {fileID: 1613692661}
+  x: 0
+  y: 0
 --- !u!212 &574179263
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -54519,6 +54561,8 @@ MonoBehaviour:
   neighboors: []
   type: 0
   crackedEffect: {fileID: 545694122}
+  x: 0
+  y: 0
 --- !u!212 &661792186
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -54904,6 +54948,8 @@ MonoBehaviour:
   neighboors: []
   type: 2
   crackedEffect: {fileID: 490536558}
+  x: 0
+  y: 0
 --- !u!212 &777580731
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -69572,6 +69618,8 @@ MonoBehaviour:
   neighboors: []
   type: 2
   crackedEffect: {fileID: 1775939008}
+  x: 0
+  y: 0
 --- !u!212 &875697207
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -74715,6 +74763,8 @@ MonoBehaviour:
   neighboors: []
   type: 1
   crackedEffect: {fileID: 453828214}
+  x: 0
+  y: 0
 --- !u!212 &1030703049
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -74890,6 +74940,8 @@ MonoBehaviour:
   neighboors: []
   type: 3
   crackedEffect: {fileID: 1440815761}
+  x: 0
+  y: 0
 --- !u!212 &1065512203
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -75065,6 +75117,8 @@ MonoBehaviour:
   neighboors: []
   type: 2
   crackedEffect: {fileID: 567918906}
+  x: 0
+  y: 0
 --- !u!212 &1128208222
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -75240,6 +75294,8 @@ MonoBehaviour:
   neighboors: []
   type: 0
   crackedEffect: {fileID: 452277326}
+  x: 0
+  y: 0
 --- !u!212 &1133674694
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -75431,6 +75487,8 @@ MonoBehaviour:
   neighboors: []
   type: 0
   crackedEffect: {fileID: 188425877}
+  x: 0
+  y: 0
 --- !u!212 &1151888230
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -80489,6 +80547,8 @@ MonoBehaviour:
   neighboors: []
   type: 1
   crackedEffect: {fileID: 1427302625}
+  x: 0
+  y: 0
 --- !u!212 &1230761924
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -85495,6 +85555,8 @@ MonoBehaviour:
   neighboors: []
   type: 2
   crackedEffect: {fileID: 1712278337}
+  x: 0
+  y: 0
 --- !u!212 &1266240990
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -90550,6 +90612,8 @@ MonoBehaviour:
   neighboors: []
   type: 3
   crackedEffect: {fileID: 848932893}
+  x: 0
+  y: 0
 --- !u!212 &1327182080
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -90725,6 +90789,8 @@ MonoBehaviour:
   neighboors: []
   type: 1
   crackedEffect: {fileID: 2031872967}
+  x: 0
+  y: 0
 --- !u!212 &1337850314
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -105444,6 +105510,8 @@ MonoBehaviour:
   neighboors: []
   type: 3
   crackedEffect: {fileID: 1983832525}
+  x: 0
+  y: 0
 --- !u!212 &1551451288
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -134723,6 +134791,8 @@ MonoBehaviour:
   neighboors: []
   type: 0
   crackedEffect: {fileID: 1213037711}
+  x: 0
+  y: 0
 --- !u!212 &1818609327
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -134942,6 +135012,8 @@ MonoBehaviour:
   neighboors: []
   type: 0
   crackedEffect: {fileID: 1398159951}
+  x: 0
+  y: 0
 --- !u!212 &1859964974
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -135117,6 +135189,8 @@ MonoBehaviour:
   neighboors: []
   type: 2
   crackedEffect: {fileID: 788153918}
+  x: 0
+  y: 0
 --- !u!212 &1902721541
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -135292,6 +135366,8 @@ MonoBehaviour:
   neighboors: []
   type: 2
   crackedEffect: {fileID: 135073624}
+  x: 0
+  y: 0
 --- !u!212 &1916291311
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -135483,6 +135559,8 @@ MonoBehaviour:
   neighboors: []
   type: 2
   crackedEffect: {fileID: 1752640863}
+  x: 0
+  y: 0
 --- !u!212 &1918572237
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -135642,6 +135720,8 @@ MonoBehaviour:
   neighboors: []
   type: 0
   crackedEffect: {fileID: 187502256}
+  x: 0
+  y: 0
 --- !u!212 &1959483774
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -140648,6 +140728,8 @@ MonoBehaviour:
   neighboors: []
   type: 3
   crackedEffect: {fileID: 376044288}
+  x: 0
+  y: 0
 --- !u!212 &1985713414
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -140823,6 +140905,8 @@ MonoBehaviour:
   neighboors: []
   type: 3
   crackedEffect: {fileID: 1273676686}
+  x: 0
+  y: 0
 --- !u!212 &2011250591
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -145829,6 +145913,8 @@ MonoBehaviour:
   neighboors: []
   type: 0
   crackedEffect: {fileID: 410298480}
+  x: 0
+  y: 0
 --- !u!212 &2068810211
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -146004,6 +146090,8 @@ MonoBehaviour:
   neighboors: []
   type: 1
   crackedEffect: {fileID: 1766587245}
+  x: 0
+  y: 0
 --- !u!212 &2122674970
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -146195,6 +146283,8 @@ MonoBehaviour:
   neighboors: []
   type: 2
   crackedEffect: {fileID: 1231510821}
+  x: 0
+  y: 0
 --- !u!212 &2131662395
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -146354,6 +146444,8 @@ MonoBehaviour:
   neighboors: []
   type: 3
   crackedEffect: {fileID: 567323539}
+  x: 0
+  y: 0
 --- !u!212 &2142157263
 SpriteRenderer:
   m_ObjectHideFlags: 0
