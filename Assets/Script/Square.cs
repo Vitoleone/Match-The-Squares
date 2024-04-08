@@ -18,7 +18,6 @@ public class Square : MonoBehaviour
     {
         spawned = true;
         EventManager.instance.onGetScore += GetScoreValueByType;
-        DOTween.SetTweensCapacity(100,100);
     }
     private void OnEnable()
     {
@@ -46,12 +45,13 @@ public class Square : MonoBehaviour
     public void CheckNeighboors()
     {
         neighboors = new Square[4];
-        int length = SquareManager.instance.squareList.GetLength(1) - 1;
+        int xLength = SquareManager.instance.squareList.GetLength(1);
+        int yLength = SquareManager.instance.squareList.GetLength(0);
 
-        neighboors[0] = x - 1 <= length && x-1 >= 0 ? SquareManager.instance.squareList[y, x - 1]: null;
-        neighboors[1] = x + 1 <= length ? SquareManager.instance.squareList[y, x + 1]: null;
-        neighboors[2] = y - 1 <= length && y - 1 >= 0 ? SquareManager.instance.squareList[y - 1, x]: null;
-        neighboors[3] = y + 1 <= length ? SquareManager.instance.squareList[y + 1, x]: null;
+        neighboors[0] = x - 1 <= xLength && x-1 >= 0 ? SquareManager.instance.squareList[y, x - 1]: null;
+        neighboors[1] = x + 1 <= xLength ? SquareManager.instance.squareList[y, x + 1]: null;
+        neighboors[2] = y - 1 <= yLength && y - 1 >= 0 ? SquareManager.instance.squareList[y - 1, x]: null;
+        neighboors[3] = y + 1 <= yLength ? SquareManager.instance.squareList[y + 1, x]: null;
         
         CheckSameTypeNeighboor();
     }
