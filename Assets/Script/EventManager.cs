@@ -9,10 +9,10 @@ public class EventManager : Singleton<EventManager>
     public delegate void OnSecondSquareSelected();
     public delegate void OnSquareMoved(Square square1, Square square2);
     public delegate void OnCracked();
-    public delegate void OnSpawned();
+   
     public OnSecondSquareSelected onSecondSquareSelected;
     public OnCracked onCracked;
-    public OnSpawned onSpawned;
+    public Action<Square> onSpawned;
     public OnSquareMoved onSquareMoved;
     public Action<Square,Square> onCrackControll;
 

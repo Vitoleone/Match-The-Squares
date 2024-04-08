@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class CrackController : MonoBehaviour
+public class CrackController : Singleton<CrackController>
 {
+ 
     private void Start()
     {
         EventManager.instance.onCrackControll += CrackCheck;
@@ -13,23 +15,31 @@ public class CrackController : MonoBehaviour
     /// </summary>
     void CrackCheck(Square square1, Square square2)
     {
-        int x1 = square1.x;
-        int y1 = square1.y;
-
-        int x2 = square2.x;
-        int y2 = square2.y;
-
-        if(x1 == x2)
+        if (square2 == null)
         {
-            CheckVertical(x1);
-            CheckHorizontally(y1);
-            CheckHorizontally(y2);
+            CheckHorizontally(square1.y);
+            CheckVertical(square1.x);
         }
-        else if(y1 == y2)
+        else
         {
-            CheckHorizontally(y1);
-            CheckVertical(x1);
-            CheckVertical(x2);
+            int x1 = square1.x;
+            int y1 = square1.y;
+
+            int x2 = square2.x;
+            int y2 = square2.y;
+
+            if (x1 == x2)
+            {
+                CheckVertical(x1);
+                CheckHorizontally(y1);
+                CheckHorizontally(y2);
+            }
+            else if (y1 == y2)
+            {
+                CheckHorizontally(y1);
+                CheckVertical(x1);
+                CheckVertical(x2);
+            }
         }
     }
     private void CheckHorizontally(int y)
@@ -97,11 +107,12 @@ public class CrackController : MonoBehaviour
                 previousType = SquareManager.instance.squareList[i, x].GetSquareType();
                 sameTypeSquares.Add(SquareManager.instance.squareList[i, x]);
             }
-            if(sameTypeSquares.Count >= 3)
-            {
-                CrackSameTypeSquares(sameTypeSquares);
-            }
+            
             //Debug.Log("X: " + SquareManager.instance.squareList[i, x].x + " Y: " + SquareManager.instance.squareList[i, x].y);
+        }
+        if (sameTypeSquares.Count >= 3)
+        {
+            CrackSameTypeSquares(sameTypeSquares);
         }
         Debug.Log("Vertical");
         

@@ -12,21 +12,19 @@ public class Square : MonoBehaviour
     [SerializeField]private SquareType type;
     [SerializeField] private ParticleSystem crackedEffect;
     Tween crackTween;
-    bool spawned = true;
+ 
     public int x, y;
     private void Start()
     {
-        spawned = true;
+        
         EventManager.instance.onGetScore += GetScoreValueByType;
     }
     private void OnEnable()
     {
         if (EventManager.instance != null)
         {
-            spawned = true;
             EventManager.instance.onGetScore += GetScoreValueByType;
         }
-        
     }
 
     private void OnDisable()
@@ -69,25 +67,15 @@ public class Square : MonoBehaviour
         GameManager.instance.ChangeGameState(GameState.Breaking);
         UIManager.instance.AddScore(EventManager.instance.onGetScore, this.type);
         crackedEffect.Play();
-        if(crackTween != null)
+        transform.DOScale(.3f, .5f).OnComplete(() =>
         {
-            crackTween.Restart();
-        }
-        else
-        {
-            crackTween = transform.DOScale(.3f, .25f).OnComplete(() =>
-            {
-                //Do particles and deactive
-                spawned = false;
-                //crackedEffect.SetActive(false);
-                gameObject.SetActive(false);
+            //Do particles and deactive
+            //crackedEffect.SetActive(false);
+            gameObject.SetActive(false);
+            EventManager.instance.onSpawned?.Invoke(this);
 
-            })
-            .SetAutoKill(false)
-            .SetRecyclable(true)
-            .Pause();
-        }
-        
+        }).SetAutoKill(true);
+
     }
     public ParticleSystemRenderer GetParticleRenderer()
     {

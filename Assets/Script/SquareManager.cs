@@ -23,7 +23,7 @@ public class SquareManager : Singleton<SquareManager>
         DOTween.SetTweensCapacity(100, 100);
         GetSquares();
 
-        EventManager.instance.onSpawned += SpawnAllCrackedSquares;
+        EventManager.instance.onSpawned += Spawn;
         EventManager.instance.onCracked += CrackAllCrackedSquares;
         EventManager.instance.onSquareMoved += GameManager.instance.ControlSelectedSquares;
     }
@@ -40,19 +40,6 @@ public class SquareManager : Singleton<SquareManager>
             EventManager.instance.onSecondSquareSelected?.Invoke();
         }
     }
-    void SpawnAllCrackedSquares()
-    {
-        if(spawnedSquares.Count >= 3)
-        {
-            GameManager.instance.ChangeGameState(GameState.Placement);
-            foreach (var square in spawnedSquares)
-            {
-                Spawn(square);
-            }
-            spawnedSquares.Clear();
-        }
-        GameManager.instance.ChangeGameState(GameState.Playing);
-    }
     void CrackAllCrackedSquares()
     {
         if (crackedSquares.Count >= 3)
@@ -66,13 +53,17 @@ public class SquareManager : Singleton<SquareManager>
             crackedSquares.Clear();
             GameManager.instance.ChangeGameState(GameState.Playing);
         }
-        Invoke("SpawnAllCrackedSquares", 0.4f);
+
     }
-    void Spawn(Square square)
+    public void Spawn(Square square)
     {
         square.gameObject.SetActive(true);
         ChangeSquareTypeRandom(square);
-        square.transform.DOScale(.75f, 0.25f);
+        square.transform.DOScale(.75f, 0.25f).OnComplete(() =>
+        {
+            EventManager.instance.onCrackControll?.Invoke(square,null);
+        });
+        
     }
     void ChangeSquareTypeRandom(Square square)
     {
