@@ -42,7 +42,7 @@ public class SquareManager : Singleton<SquareManager>
     }
     void SpawnAllCrackedSquares()
     {
-        if(spawnedSquares.Count > 0)
+        if(spawnedSquares.Count >= 3)
         {
             GameManager.instance.ChangeGameState(GameState.Placement);
             foreach (var square in spawnedSquares)
@@ -55,7 +55,7 @@ public class SquareManager : Singleton<SquareManager>
     }
     void CrackAllCrackedSquares()
     {
-        if (crackedSquares.Count > 0)
+        if (crackedSquares.Count >= 3)
         {
             GameManager.instance.ChangeGameState(GameState.Breaking);
             foreach (var square in crackedSquares)
@@ -64,20 +64,15 @@ public class SquareManager : Singleton<SquareManager>
                 spawnedSquares.Add(square);
             }
             crackedSquares.Clear();
-        }
-        else
-        {
             GameManager.instance.ChangeGameState(GameState.Playing);
         }
+        Invoke("SpawnAllCrackedSquares", 0.4f);
     }
     void Spawn(Square square)
     {
-        ChangeSquareTypeRandom(square);
         square.gameObject.SetActive(true);
-        square.transform.DOScale(.75f, 0.25f).onComplete = () =>
-        {
-            square.CheckNeighboors();
-        };
+        ChangeSquareTypeRandom(square);
+        square.transform.DOScale(.75f, 0.25f);
     }
     void ChangeSquareTypeRandom(Square square)
     {
@@ -86,8 +81,9 @@ public class SquareManager : Singleton<SquareManager>
         square.ChangeCrackParticleMaterial(squarePrefab[randomNumber].gameObject.GetComponent<Square>().GetParticleRenderer());
         square.gameObject.GetComponent<SpriteRenderer>().sharedMaterial = squarePrefab[randomNumber].gameObject.GetComponent<SpriteRenderer>().sharedMaterial;
     }
+   
 
-    void GetSquares()
+    public void GetSquares()
     {
         Square[] sqr = allSquares.ToArray();
         int i = 0;

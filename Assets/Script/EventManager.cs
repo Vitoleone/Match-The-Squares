@@ -14,6 +14,7 @@ public class EventManager : Singleton<EventManager>
     public OnCracked onCracked;
     public OnSpawned onSpawned;
     public OnSquareMoved onSquareMoved;
+    public Action<Square,Square> onCrackControll;
 
     //UI
     public delegate int OnGetScore(SquareType type);

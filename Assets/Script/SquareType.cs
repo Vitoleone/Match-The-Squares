@@ -4,4 +4,5 @@ public enum SquareType
     Green = 1,
     Red = 2,
     Purple = 3,
+    None = 4,
 }

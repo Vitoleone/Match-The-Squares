@@ -52,29 +52,6 @@ public class Square : MonoBehaviour
         neighboors[1] = x + 1 <= xLength ? SquareManager.instance.squareList[y, x + 1]: null;
         neighboors[2] = y - 1 <= yLength && y - 1 >= 0 ? SquareManager.instance.squareList[y - 1, x]: null;
         neighboors[3] = y + 1 <= yLength ? SquareManager.instance.squareList[y + 1, x]: null;
-        
-        CheckSameTypeNeighboor();
-    }
-    public void CheckSameTypeNeighboor()
-    {
-        if (!neighboors[0].IsUnityNull() && !neighboors[1].IsUnityNull())
-        {
-            if (neighboors[0].type == this.type && neighboors[1].type == this.type)
-            {
-                neighboors[0].Crack();
-                neighboors[1].Crack();
-                Crack();
-            }
-        }
-        if (!neighboors[2].IsUnityNull() && !neighboors[3].IsUnityNull())
-        {
-            if (neighboors[2].type == this.type && neighboors[3].type == this.type)
-            {
-                neighboors[2].Crack();
-                neighboors[3].Crack();
-                Crack();
-            }
-        }
     }
 
     public SquareType GetSquareType()
@@ -87,6 +64,8 @@ public class Square : MonoBehaviour
     }
     public void Crack()
     {
+        Debug.Log(gameObject + " Cracked");
+        SquareManager.instance.spawnedSquares.Add(this);
         GameManager.instance.ChangeGameState(GameState.Breaking);
         UIManager.instance.AddScore(EventManager.instance.onGetScore, this.type);
         crackedEffect.Play();
@@ -121,6 +100,11 @@ public class Square : MonoBehaviour
     int GetScoreValueByType(SquareType type)
     {
         return (((int)type) + 1) * 5;
+    }
+    public void ChangeSquareXYValues(int x, int y)
+    {
+        this.x = x; 
+        this.y = y;
     }
 
 }
