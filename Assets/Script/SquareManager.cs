@@ -6,17 +6,16 @@ using UnityEngine;
 
 public class SquareManager : Singleton<SquareManager>
 {
-   [SerializeField]private GameObject[] squarePrefab;
-    [SerializeField] GameObject squares;
-   [SerializeField]private Camera camera;
-   [SerializeField]private Transform spawnPosition;
-    [SerializeField] private int width;
-    [SerializeField] private int height;
-    [SerializeField]public Square[,] squareList;
-    Dictionary<SquareType, SpriteRenderer> SquareTypeAndRendererDictionary = new Dictionary<SquareType, SpriteRenderer>();
+    [Header("Square Attributes")]
     public List<Square> allSquares;
     public List<Square> crackedSquares = new List<Square>();
     public List<Square> spawnedSquares = new List<Square>();
+    [SerializeField]private GameObject[] squarePrefab;
+    [SerializeField] private int width;
+    [SerializeField] private int height;
+    [SerializeField]public Square[,] squareList;
+
+    Dictionary<SquareType, SpriteRenderer> SquareTypeAndRendererDictionary = new Dictionary<SquareType, SpriteRenderer>();
  
     private void Start()
     {
@@ -26,9 +25,12 @@ public class SquareManager : Singleton<SquareManager>
 
         EventManager.instance.onSpawned += Spawn;
         EventManager.instance.onCracked += CrackAllCrackedSquares;
-        EventManager.instance.onSquareMoved += GameManager.instance.ControlSelectedSquares;
         SetDictionary();
     }
+    /// <summary>
+    /// Selects given square and checks if it is first or second selected square with isSquareSelected. If it is second triggers onSecondSquareSelected event.
+    /// </summary>
+    /// <param name="selectedSquare"></param>
     public void SelectSquare(Square selectedSquare)
     {
         if (!GameManager.instance.isSquareSelected)
@@ -42,6 +44,9 @@ public class SquareManager : Singleton<SquareManager>
             EventManager.instance.onSecondSquareSelected?.Invoke();
         }
     }
+    /// <summary>
+    /// Crack all squares which is in crackedSquares list. Change gamestate to breaking in that operation, after finish assign it to playing.
+    /// </summary>
     void CrackAllCrackedSquares()
     {
         if (crackedSquares.Count >= 3)
@@ -57,6 +62,10 @@ public class SquareManager : Singleton<SquareManager>
         }
 
     }
+    /// <summary>
+    /// Spawn given square with random values and checks if any posible cracks or not.
+    /// </summary>
+    /// <param name="square"></param>
     public void Spawn(Square square)
     {
         square.gameObject.SetActive(true);
@@ -67,15 +76,22 @@ public class SquareManager : Singleton<SquareManager>
         });
         
     }
+    /// <summary>
+    /// Changes give square type, renderer material and particle material to random value.
+    /// </summary>
+    /// <param name="square"></param>
     void ChangeSquareTypeRandom(Square square)
     {
         int randomNumber = Random.Range(0, squarePrefab.Length);
 
         square.ChangeSquareType(squarePrefab[randomNumber].GetComponent<Square>().GetSquareType());
-        square.ChangeCrackParticleMaterial(squarePrefab[randomNumber].gameObject.GetComponent<Square>().GetParticleRenderer());
+        square.ChangeCrackParticleMaterial(squarePrefab[randomNumber].gameObject.GetComponent<Square>().crackedEffect.GetComponent<ParticleSystemRenderer>());
         square.gameObject.GetComponent<SpriteRenderer>().sharedMaterial = SquareTypeAndRendererDictionary[square.GetSquareType()].sharedMaterial;
     }
 
+    /// <summary>
+    /// Sets dictionary keys and values.
+    /// </summary>
     void SetDictionary()
     {
         foreach (var prefab in squarePrefab)
@@ -85,7 +101,9 @@ public class SquareManager : Singleton<SquareManager>
         }
     }
    
-
+    /// <summary>
+    /// Assing list values to two dimension array which name is squareList.
+    /// </summary>
     public void GetSquares()
     {
         Square[] sqr = allSquares.ToArray();

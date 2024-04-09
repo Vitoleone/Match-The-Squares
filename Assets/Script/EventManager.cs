@@ -5,18 +5,32 @@ using UnityEngine;
 
 public class EventManager : Singleton<EventManager>
 {
-    //In-Game
+    /// <summary>
+    /// Triggered on player select second square.
+    /// </summary>
     public delegate void OnSecondSquareSelected();
-    public delegate void OnSquareMoved(Square square1, Square square2);
-    public delegate void OnCracked();
-   
     public OnSecondSquareSelected onSecondSquareSelected;
+    /// <summary>
+    /// Treggered on a square is cracked.
+    /// </summary>
+    public delegate void OnCracked();
     public OnCracked onCracked;
+    /// <summary>
+    /// Triggered on a square is spawned
+    /// </summary>
     public Action<Square> onSpawned;
-    public OnSquareMoved onSquareMoved;
+    /// <summary>
+    /// Checks changed two squares vertically and horizontally. If second square value is null checks only first square value.
+    /// </summary>
     public Action<Square,Square> onCrackControll;
 
-    //UI
+    //UI Section
+
+    /// <summary>
+    /// Updates values when score value is changed.
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
     public delegate int OnGetScore(SquareType type);
     public OnGetScore onGetScore;
   

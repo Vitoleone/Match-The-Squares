@@ -11,7 +11,7 @@ public class CrackController : Singleton<CrackController>
         EventManager.instance.onCrackControll += CrackCheck;
     }
     /// <summary>
-    /// Checks the square table if it has squares that can be cracked or not.
+    /// Checks the square table if it has squares that can be cracked or not. Can check just one square by assign square2 parameter to null and square1 is wanted square.
     /// </summary>
     void CrackCheck(Square square1, Square square2)
     {
@@ -42,23 +42,27 @@ public class CrackController : Singleton<CrackController>
             }
         }
     }
+    /// <summary>
+    /// Checks given y value of squareList horizontally and if there are 3 and more same type of squares in a row, crack them.
+    /// </summary>
+    /// <param name="y"></param>
     private void CheckHorizontally(int y)
     {
         SquareType previousType = SquareType.None;
         List<Square> sameTypeSquares = new List<Square>();
         for(int i = 0; i < SquareManager.instance.squareList.GetLength(1); i++)
         {
-            if(previousType == SquareType.None)
+            if (previousType == SquareType.None)
             {
                 previousType = SquareManager.instance.squareList[y, i].GetSquareType();
                 sameTypeSquares.Add(SquareManager.instance.squareList[y, i]);
             }
-            else if(previousType == SquareManager.instance.squareList[y,i].GetSquareType())
+            else if (previousType == SquareManager.instance.squareList[y, i].GetSquareType())
             {
                 previousType = SquareManager.instance.squareList[y, i].GetSquareType();
                 sameTypeSquares.Add(SquareManager.instance.squareList[y, i]);
             }
-            else if(previousType != SquareManager.instance.squareList[y, i].GetSquareType() && sameTypeSquares.Count < 3)
+            else if (previousType != SquareManager.instance.squareList[y, i].GetSquareType() && sameTypeSquares.Count < 3)
             {
                 previousType = SquareManager.instance.squareList[y, i].GetSquareType();
                 sameTypeSquares.Clear();
@@ -70,15 +74,16 @@ public class CrackController : Singleton<CrackController>
                 previousType = SquareManager.instance.squareList[y, i].GetSquareType();
                 sameTypeSquares.Add(SquareManager.instance.squareList[y, i]);
             }
-            //Debug.Log("X: " + SquareManager.instance.squareList[y, i].x + " Y: " + SquareManager.instance.squareList[y, i].y);
-            Debug.Log(SquareManager.instance.squareList[y, i].GetSquareType() + " " +SquareManager.instance.squareList[y, i].name);
         }
         if (sameTypeSquares.Count >= 3)
         {
             CrackSameTypeSquares(sameTypeSquares);
         }
-        Debug.Log("Horizontal");
     }
+    /// <summary>
+    /// Checks given x value of squareList horizontally and if there are 3 and more same type of squares in a row, crack them.
+    /// </summary>
+    /// <param name="x"></param>
     private void CheckVertical(int x)
     {
         SquareType previousType = SquareType.None;
@@ -88,18 +93,18 @@ public class CrackController : Singleton<CrackController>
             if (previousType == SquareType.None)
             {
                 previousType = SquareManager.instance.squareList[i, x].GetSquareType();
-                sameTypeSquares.Add(SquareManager.instance.squareList[i,x]);
+                sameTypeSquares.Add(SquareManager.instance.squareList[i, x]);
             }
             else if (previousType == SquareManager.instance.squareList[i, x].GetSquareType())
             {
                 previousType = SquareManager.instance.squareList[i, x].GetSquareType();
                 sameTypeSquares.Add(SquareManager.instance.squareList[i, x]);
             }
-            else if(previousType != SquareManager.instance.squareList[i, x].GetSquareType() && sameTypeSquares.Count < 3)
+            else if (previousType != SquareManager.instance.squareList[i, x].GetSquareType() && sameTypeSquares.Count < 3)
             {
                 previousType = SquareManager.instance.squareList[i, x].GetSquareType();
                 sameTypeSquares.Clear();
-                sameTypeSquares.Add(SquareManager.instance.squareList[i,x]);
+                sameTypeSquares.Add(SquareManager.instance.squareList[i, x]);
             }
             else if (previousType != SquareManager.instance.squareList[i, x].GetSquareType() && sameTypeSquares.Count >= 3)
             {
@@ -107,16 +112,16 @@ public class CrackController : Singleton<CrackController>
                 previousType = SquareManager.instance.squareList[i, x].GetSquareType();
                 sameTypeSquares.Add(SquareManager.instance.squareList[i, x]);
             }
-            
-            //Debug.Log("X: " + SquareManager.instance.squareList[i, x].x + " Y: " + SquareManager.instance.squareList[i, x].y);
         }
         if (sameTypeSquares.Count >= 3)
         {
             CrackSameTypeSquares(sameTypeSquares);
         }
-        Debug.Log("Vertical");
-        
     }
+    /// <summary>
+    /// Adds same type squares to crackedSquares list then if its count above and equal 3 then triggers onCracked event.
+    /// </summary>
+    /// <param name="sameTypeSquares"></param>
     void CrackSameTypeSquares(List<Square> sameTypeSquares)
     {
         int added = 0;

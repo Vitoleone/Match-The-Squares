@@ -7,11 +7,9 @@ using Unity.VisualScripting;
 using UnityEngine;
 public class Square : MonoBehaviour
 {
-    RaycastHit2D leftHit, rightHit, upHit, downHit;
-    [SerializeField]Square[] neighboors;
+    [Header("General Attributes")]
     [SerializeField]private SquareType type;
-    [SerializeField] private ParticleSystem crackedEffect;
-    Tween crackTween;
+    [SerializeField] public ParticleSystem crackedEffect;
  
     public int x, y;
     private void Start()
@@ -38,57 +36,61 @@ public class Square : MonoBehaviour
             SquareManager.instance.SelectSquare(this);
         }
     }
-   
-    [NaughtyAttributes.Button]
-    public void CheckNeighboors()
-    {
-        neighboors = new Square[4];
-        int xLength = SquareManager.instance.squareList.GetLength(1);
-        int yLength = SquareManager.instance.squareList.GetLength(0);
-
-        neighboors[0] = x - 1 <= xLength && x-1 >= 0 ? SquareManager.instance.squareList[y, x - 1]: null;
-        neighboors[1] = x + 1 <= xLength ? SquareManager.instance.squareList[y, x + 1]: null;
-        neighboors[2] = y - 1 <= yLength && y - 1 >= 0 ? SquareManager.instance.squareList[y - 1, x]: null;
-        neighboors[3] = y + 1 <= yLength ? SquareManager.instance.squareList[y + 1, x]: null;
-    }
-
+    /// <summary>
+    /// Returns square type.
+    /// </summary>
+    /// <returns></returns>
     public SquareType GetSquareType()
     {
         return type;
     }
+    /// <summary>
+    /// Changes square's type to newType.
+    /// </summary>
+    /// <param name="newType"></param>
     public void ChangeSquareType(SquareType newType)
     {
         type = newType;
     }
+    /// <summary>
+    /// Play cracked effect particle. Do a scale tween  and when tween is completed trigger onSpawnedFunction.
+    /// </summary>
     public void Crack()
     {
-        Debug.Log(gameObject + " Cracked");
         SquareManager.instance.spawnedSquares.Add(this);
         GameManager.instance.ChangeGameState(GameState.Breaking);
         UIManager.instance.AddScore(EventManager.instance.onGetScore, this.type);
         crackedEffect.Play();
         transform.DOScale(.3f, .5f).OnComplete(() =>
         {
-            //Do particles and deactive
-            //crackedEffect.SetActive(false);
             gameObject.SetActive(false);
             EventManager.instance.onSpawned?.Invoke(this);
 
         }).SetAutoKill(true);
 
     }
-    public ParticleSystemRenderer GetParticleRenderer()
-    {
-        return crackedEffect.GetComponent<ParticleSystemRenderer>();
-    }
+    /// <summary>
+    /// Changes cracked particle effect's material when square spawned with different color.
+    /// </summary>
+    /// <param name="particleSystemRenderer"></param>
     public void ChangeCrackParticleMaterial(ParticleSystemRenderer particle )
     {
         crackedEffect.GetComponent<ParticleSystemRenderer>().sharedMaterial = particle.sharedMaterial;
     }
+    /// <summary>
+    /// Return a value that depends on squareType.
+    /// </summary>
+    /// <param name="type"></param>
+    /// <returns></returns>
     int GetScoreValueByType(SquareType type)
     {
         return (((int)type) + 1) * 5;
     }
+    /// <summary>
+    /// Changes squares x and y values to wanted values.
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
     public void ChangeSquareXYValues(int x, int y)
     {
         this.x = x; 

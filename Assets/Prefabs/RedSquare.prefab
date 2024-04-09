@@ -103,6 +103,8 @@ MonoBehaviour:
   neighboors: []
   type: 2
   crackedEffect: {fileID: 3055565210237807678}
+  x: 0
+  y: 0
 --- !u!61 &-6291181863844938422
 BoxCollider2D:
   m_ObjectHideFlags: 0
