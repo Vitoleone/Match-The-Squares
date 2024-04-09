@@ -13,6 +13,7 @@ public class SquareManager : Singleton<SquareManager>
     [SerializeField] private int width;
     [SerializeField] private int height;
     [SerializeField]public Square[,] squareList;
+    Dictionary<SquareType, SpriteRenderer> SquareTypeAndRendererDictionary = new Dictionary<SquareType, SpriteRenderer>();
     public List<Square> allSquares;
     public List<Square> crackedSquares = new List<Square>();
     public List<Square> spawnedSquares = new List<Square>();
@@ -26,6 +27,7 @@ public class SquareManager : Singleton<SquareManager>
         EventManager.instance.onSpawned += Spawn;
         EventManager.instance.onCracked += CrackAllCrackedSquares;
         EventManager.instance.onSquareMoved += GameManager.instance.ControlSelectedSquares;
+        SetDictionary();
     }
     public void SelectSquare(Square selectedSquare)
     {
@@ -68,9 +70,19 @@ public class SquareManager : Singleton<SquareManager>
     void ChangeSquareTypeRandom(Square square)
     {
         int randomNumber = Random.Range(0, squarePrefab.Length);
+
         square.ChangeSquareType(squarePrefab[randomNumber].GetComponent<Square>().GetSquareType());
         square.ChangeCrackParticleMaterial(squarePrefab[randomNumber].gameObject.GetComponent<Square>().GetParticleRenderer());
-        square.gameObject.GetComponent<SpriteRenderer>().sharedMaterial = squarePrefab[randomNumber].gameObject.GetComponent<SpriteRenderer>().sharedMaterial;
+        square.gameObject.GetComponent<SpriteRenderer>().sharedMaterial = SquareTypeAndRendererDictionary[square.GetSquareType()].sharedMaterial;
+    }
+
+    void SetDictionary()
+    {
+        foreach (var prefab in squarePrefab)
+        {
+            Square square = prefab.GetComponent<Square>();
+            SquareTypeAndRendererDictionary.Add(square.GetSquareType(), prefab.GetComponent<SpriteRenderer>());
+        }
     }
    
 
