@@ -10,6 +10,10 @@ public class UIManager : Singleton<UIManager>
     [Header("Texts")]
     [SerializeField] private TextMeshProUGUI scoreText;
     [SerializeField] private TextMeshProUGUI stateText;
+    [SerializeField] private TextMeshProUGUI redGoalText;
+    [SerializeField] private TextMeshProUGUI blueGoalText;
+    [SerializeField] private TextMeshProUGUI greenGoalText;
+    [SerializeField] private TextMeshProUGUI purpleGoalText;
     int score = 0;
 
     /// <summary>
@@ -31,4 +35,11 @@ public class UIManager : Singleton<UIManager>
         stateText.text = gameState.ToString();
     }
     
+    public void UpdateGoalTexts()
+    {
+        redGoalText.text = " : " + GoalManager.instance.typeGoals[SquareType.Red].ToString();
+        blueGoalText.text = " : " + GoalManager.instance.typeGoals[SquareType.Blue].ToString();
+        greenGoalText.text = " : " + GoalManager.instance.typeGoals[SquareType.Green].ToString();
+        purpleGoalText.text = " : " + GoalManager.instance.typeGoals[SquareType.Purple].ToString();
+    }
 }

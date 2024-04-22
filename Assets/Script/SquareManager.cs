@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -14,6 +15,8 @@ public class SquareManager : Singleton<SquareManager>
     [SerializeField] private int width;
     [SerializeField] private int height;
     [SerializeField]public Square[,] squareList;
+    [SerializeField] public HorizontalSpecialSquare horizontalSpecialSquare;
+    [SerializeField] public VerticalSpecialSquare verticalSpecialSquare;
 
     Dictionary<SquareType, SpriteRenderer> SquareTypeAndRendererDictionary = new Dictionary<SquareType, SpriteRenderer>();
  
@@ -68,6 +71,10 @@ public class SquareManager : Singleton<SquareManager>
     /// <param name="square"></param>
     public void Spawn(Square square)
     {
+        if(crackedSquares.Count <= 0)
+        {
+            GameManager.instance.ChangeGameState(GameState.Playing);
+        }
         square.gameObject.SetActive(true);
         ChangeSquareTypeRandom(square);
         square.transform.DOScale(.75f, 0.25f).OnComplete(() =>
@@ -82,7 +89,7 @@ public class SquareManager : Singleton<SquareManager>
     /// <param name="square"></param>
     void ChangeSquareTypeRandom(Square square)
     {
-        int randomNumber = Random.Range(0, squarePrefab.Length);
+        int randomNumber = UnityEngine.Random.Range(0, squarePrefab.Length);
 
         square.ChangeSquareType(squarePrefab[randomNumber].GetComponent<Square>().GetSquareType());
         square.ChangeCrackParticleMaterial(squarePrefab[randomNumber].gameObject.GetComponent<Square>().crackedEffect.GetComponent<ParticleSystemRenderer>());
@@ -118,5 +125,30 @@ public class SquareManager : Singleton<SquareManager>
                 i++;
             }
         }
+    }
+
+    public void SpawnBombSpecialSquare()
+    {
+        //TODO special bomb will be added.
+    }
+    /// <summary>
+    /// Spawns horizontal or vertical special squares at first element of crackedSquares list. 
+    /// </summary>
+    /// <param name="orientation"></param>
+    public void SpawnHorizontalOrVerticalSpecialSquare(bool orientation)
+    {   
+        if (orientation)
+        {
+            Square firstSquare = crackedSquares[0];
+            crackedSquares.RemoveAt(0);
+            horizontalSpecialSquare.Spawn(firstSquare);
+        }
+        else
+        {
+            Square firstSquare = crackedSquares[0];
+            crackedSquares.RemoveAt(0);
+            verticalSpecialSquare.Spawn(firstSquare);
+        }
+        EventManager.instance.onCracked?.Invoke();
     }
 }

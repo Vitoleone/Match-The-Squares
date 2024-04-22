@@ -35,6 +35,7 @@ public class Square : MonoBehaviour
         {
             SquareManager.instance.SelectSquare(this);
         }
+        Debug.Log("Basýldý");
     }
     /// <summary>
     /// Returns square type.
@@ -59,6 +60,7 @@ public class Square : MonoBehaviour
     {
         SquareManager.instance.spawnedSquares.Add(this);
         GameManager.instance.ChangeGameState(GameState.Breaking);
+        GoalManager.instance.UpdateGoals(this.type);
         UIManager.instance.AddScore(EventManager.instance.onGetScore, this.type);
         crackedEffect.Play();
         transform.DOScale(.3f, .5f).OnComplete(() =>

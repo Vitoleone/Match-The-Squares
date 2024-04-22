@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -70,14 +71,14 @@ public class CrackController : Singleton<CrackController>
             }
             else if (previousType != SquareManager.instance.squareList[y, i].GetSquareType() && sameTypeSquares.Count >= 3)
             {
-                CrackSameTypeSquares(sameTypeSquares);
+                CrackSameTypeSquares(sameTypeSquares,true);
                 previousType = SquareManager.instance.squareList[y, i].GetSquareType();
                 sameTypeSquares.Add(SquareManager.instance.squareList[y, i]);
             }
         }
         if (sameTypeSquares.Count >= 3)
         {
-            CrackSameTypeSquares(sameTypeSquares);
+            CrackSameTypeSquares(sameTypeSquares, true);
         }
     }
     /// <summary>
@@ -108,21 +109,23 @@ public class CrackController : Singleton<CrackController>
             }
             else if (previousType != SquareManager.instance.squareList[i, x].GetSquareType() && sameTypeSquares.Count >= 3)
             {
-                CrackSameTypeSquares(sameTypeSquares);
+                CrackSameTypeSquares(sameTypeSquares, false);
                 previousType = SquareManager.instance.squareList[i, x].GetSquareType();
                 sameTypeSquares.Add(SquareManager.instance.squareList[i, x]);
             }
         }
         if (sameTypeSquares.Count >= 3)
         {
-            CrackSameTypeSquares(sameTypeSquares);
+            CrackSameTypeSquares(sameTypeSquares,false);
         }
     }
     /// <summary>
     /// Adds same type squares to crackedSquares list then if its count above and equal 3 then triggers onCracked event.
     /// </summary>
     /// <param name="sameTypeSquares"></param>
-    void CrackSameTypeSquares(List<Square> sameTypeSquares)
+    /// <param name="orientation"> false for "Vertical", true for "Horizontal" </param>
+
+    void CrackSameTypeSquares(List<Square> sameTypeSquares, bool orientation)
     {
         int added = 0;
         foreach (var square in sameTypeSquares)
@@ -133,9 +136,17 @@ public class CrackController : Singleton<CrackController>
                 added++;
             }
         }
-        if(added >= 3)
+        if(added == 3)
         {
             EventManager.instance.onCracked?.Invoke();
+        }
+        else if(added == 4)
+        {
+            SquareManager.instance.SpawnHorizontalOrVerticalSpecialSquare(orientation);
+        }
+        else if(added == 5)
+        {
+            SquareManager.instance.SpawnBombSpecialSquare();
         }
         else
         {
@@ -144,4 +155,6 @@ public class CrackController : Singleton<CrackController>
         
         sameTypeSquares.Clear();
     }
+
+   
 }
