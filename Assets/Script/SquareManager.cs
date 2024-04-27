@@ -17,6 +17,7 @@ public class SquareManager : Singleton<SquareManager>
     [SerializeField]public Square[,] squareList;
     [SerializeField] public HorizontalSpecialSquare horizontalSpecialSquare;
     [SerializeField] public VerticalSpecialSquare verticalSpecialSquare;
+    [SerializeField] public BombSpecialSquare bombSpecialSquare;
 
     Dictionary<SquareType, SpriteRenderer> SquareTypeAndRendererDictionary = new Dictionary<SquareType, SpriteRenderer>();
  
@@ -129,7 +130,10 @@ public class SquareManager : Singleton<SquareManager>
 
     public void SpawnBombSpecialSquare()
     {
-        //TODO special bomb will be added.
+        Square firstSquare = crackedSquares[1];
+        crackedSquares.RemoveAt(1);
+        bombSpecialSquare.Spawn(firstSquare);
+        EventManager.instance.onCracked?.Invoke();
     }
     /// <summary>
     /// Spawns horizontal or vertical special squares at first element of crackedSquares list. 

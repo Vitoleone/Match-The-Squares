@@ -10,6 +10,7 @@ public class Square : MonoBehaviour
     [Header("General Attributes")]
     [SerializeField]private SquareType type;
     [SerializeField] public ParticleSystem crackedEffect;
+    public bool specialSpawned;
  
     public int x, y;
     private void Start()
@@ -35,7 +36,6 @@ public class Square : MonoBehaviour
         {
             SquareManager.instance.SelectSquare(this);
         }
-        Debug.Log("Basýldý");
     }
     /// <summary>
     /// Returns square type.
@@ -66,8 +66,11 @@ public class Square : MonoBehaviour
         transform.DOScale(.3f, .5f).OnComplete(() =>
         {
             gameObject.SetActive(false);
-            EventManager.instance.onSpawned?.Invoke(this);
-
+            if(!specialSpawned)
+            {
+                EventManager.instance.onSpawned?.Invoke(this);
+            }
+            
         }).SetAutoKill(true);
 
     }

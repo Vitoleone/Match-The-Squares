@@ -76,7 +76,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: -1
   m_Sprite: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.8235294}
   m_FlipX: 0
@@ -100,9 +100,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e59465c0bc8773f41911b3f1f87b3543, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  neighboors: []
   type: 3
   crackedEffect: {fileID: 456664297235264782}
+  specialSpawned: 0
+  x: 0
+  y: 0
 --- !u!61 &-6291181863844938422
 BoxCollider2D:
   m_ObjectHideFlags: 0

@@ -8,6 +8,7 @@ public class VerticalSpecialSquare : MonoBehaviour,SpecialSquare
     public void DeSpawn()
     {
         currentSquare.gameObject.SetActive(true);
+        currentSquare.specialSpawned = false;
         Destroy(gameObject);
     }
 
@@ -22,9 +23,12 @@ public class VerticalSpecialSquare : MonoBehaviour,SpecialSquare
 
     public void Spawn(Square newSquare)
     {
+        if (newSquare.specialSpawned)
+            return;
         currentSquare = newSquare;
         Instantiate(this, newSquare.transform.position, Quaternion.identity);
         newSquare.gameObject.SetActive(false);
+        newSquare.specialSpawned = true;
     }
     private void OnMouseDown()
     {

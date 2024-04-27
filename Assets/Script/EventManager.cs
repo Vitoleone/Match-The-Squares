@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EventManager : Singleton<EventManager>
 {
@@ -33,6 +34,5 @@ public class EventManager : Singleton<EventManager>
     /// <returns></returns>
     public delegate int OnGetScore(SquareType type);
     public OnGetScore onGetScore;
-  
-   
+    public UnityEvent onEndGame;
 }
